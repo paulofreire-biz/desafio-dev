@@ -26,6 +26,8 @@ class ImportarArquivoWizard(models.TransientModel):
             _logger.info('Vai chamar tipo_transacao.carregar_tabela()')
             tipo_transacao.carregar_tabela()
 
+    # def processar_transacao(self):
+
     def importar_arquivo(self):
         _logger.info('Estou em importar_arquivo')
 
@@ -52,22 +54,3 @@ class ImportarArquivoWizard(models.TransientModel):
             transacao_original = self.env['desafiobc.transacao.original'].create(vals)
             _logger.info('Inseriu ... %s', transacao_original.id)
 
-
-        # decoded_data = base64.b64decode(self.arquivo_txt)
-        # you logic goes here
-
-        #
-        # try:
-        #     inputx = StringIO.StringIO()
-        #     inputx.write(base64.decodestring(self.arquivo_txt))
-        #     book = open_workbook(file_contents=inputx.getvalue())
-        # except TypeError as e:
-        #     raise ValidationError(u'ERROR: {}'.format(e))
-        # sheet = book.sheets()[0]
-        # for i in range(sheet.nrows):
-        #     if i == 0:
-        #         continue
-        #     if i == 1:
-        #         name = sheet.cell(i, 0).value
-        #         vat = sheet.cell(i, 5).value
-        #
