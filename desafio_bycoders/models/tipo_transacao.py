@@ -13,7 +13,7 @@ class TipoTransacao(models.TransientModel):
 
     # sequencial = fields.Integer()
     tipo_transacao = fields.Integer()
-    descricao = fields.Char()
+    name = fields.Char('Descrição')
     is_natureza_entrada = fields.Boolean()
 
     natureza = fields.Char(compute='_compute_natureza')
@@ -37,47 +37,47 @@ class TipoTransacao(models.TransientModel):
 
         vals = {}
         vals['tipo_transacao'] = 1
-        vals['descricao'] = 'Débito'
+        vals['name'] = 'Débito'
         vals['is_natureza_entrada'] = False
         self.create(vals)
 
         vals['tipo_transacao'] = 2
-        vals['descricao'] = 'Boleto'
+        vals['name'] = 'Boleto'
         vals['is_natureza_entrada'] = False
         self.create(vals)
 
         vals['tipo_transacao'] = 3
-        vals['descricao'] = 'Financiamento'
+        vals['name'] = 'Financiamento'
         vals['is_natureza_entrada'] = False
         self.create(vals)
 
         vals['tipo_transacao'] = 4
-        vals['descricao'] = 'Crédito'
+        vals['name'] = 'Crédito'
         vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 5
-        vals['descricao'] = 'Recebimento Empréstimo'
+        vals['name'] = 'Recebimento Empréstimo'
         vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 6
-        vals['descricao'] = 'Vendas'
+        vals['name'] = 'Vendas'
         vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 7
-        vals['descricao'] = 'Recebimento TED'
+        vals['name'] = 'Recebimento TED'
         vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 8
-        vals['descricao'] = 'Recebimento DOC'
+        vals['name'] = 'Recebimento DOC'
         vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 9
-        vals['descricao'] = 'Aluguel'
+        vals['name'] = 'Aluguel'
         vals['is_natureza_entrada'] = False
         self.create(vals)
 

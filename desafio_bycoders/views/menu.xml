@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="desafiobc_root_menu" name="Desafio bycoders_"/>
-    <menuitem id="desafiobc_importar_arquivo" name="Importar Arquivo" sequence="10" parent="desafiobc_root_menu"
+    <menuitem id="desafiobc_importar_arquivo" name="Importar Arquivo" sequence="20" parent="desafiobc_root_menu"
               action="action_importar_arquivo" groups="desafio_bycoders.group_desafio_bycoders_admin"/>
-    <menuitem id="desafiobc_configuracao_menu" name="Configuração" sequence="60" parent="desafiobc_root_menu"
+    <menuitem id="desafiobc_configuracao_menu" name="Configuração" sequence="10" parent="desafiobc_root_menu"
               groups="desafio_bycoders.group_desafio_bycoders_admin">
-        <menuitem id="desafiobc_tipo_transacao" name="Tipo de Transação" sequence="62" action="action_tipo_transacao"/>
-        <menuitem id="desafiobc_transacao_original" name="Transação original" sequence="64" action="action_transacao_original"/>
+        <menuitem id="desafiobc_loja" name="Loja" sequence="62" action="action_loja"/>
+        <menuitem id="desafiobc_tipo_transacao" name="Tipo de Transação" sequence="64" action="action_tipo_transacao"/>
+        <menuitem id="desafiobc_transacao_original" name="Transação original" sequence="66" action="action_transacao_original"/>
     </menuitem>
 </odoo>

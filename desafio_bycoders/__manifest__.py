@@ -25,7 +25,7 @@
     'data': [
         'security/groups.xml',
         'security/ir.model.access.csv',
-        'views/views.xml',
+        'views/loja.xml',
         'views/templates.xml',
         'views/transacao_original.xml',
         'views/tipo_transacao.xml',
