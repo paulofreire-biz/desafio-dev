@@ -41,9 +41,6 @@ class ImportarArquivoWizard(models.TransientModel):
             date_time_obj = datetime.strptime(date_time_str, '%Y%m%d%H%M%S')
             vals['data_hora_ocorrencia'] = date_time_obj
 
-            valor_movimentacao = int(rec.valor_movimentacao)/100
-            vals['valor_movimentacao'] = int(valor_movimentacao)
-
             # Validando se o tipo da transação existe
             tipo_transacao = self.env['desafiobc.tipo.transacao'].search([['tipo_transacao', '=', int(rec.tipo_transacao)]])
             if not tipo_transacao:
@@ -54,6 +51,12 @@ class ImportarArquivoWizard(models.TransientModel):
                 continue
 
             vals['tipo_transacao_id'] = tipo_transacao.id
+
+            valor_movimentacao = int(rec.valor_movimentacao)/100
+            if not tipo_transacao.is_natureza_entrada:
+                valor_movimentacao = valor_movimentacao * (-1)
+
+            vals['valor_movimentacao'] = valor_movimentacao
 
             # Tratando beneficiario
             beneficiario = self.env['desafiobc.beneficiario'].search([['cpf', '=', rec.cpf_beneficiario]])
@@ -83,9 +86,9 @@ class ImportarArquivoWizard(models.TransientModel):
 
             _logger.info('tipo_transacao.is_natureza_entrada = %s', tipo_transacao.is_natureza_entrada)
             # Atualizando o saldo da loja
-            valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
+            # valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
             vals2 = {}
-            vals2['saldo'] = loja.saldo + valor_atualizacao
+            vals2['saldo'] = loja.saldo + valor_movimentacao
             loja.write(vals2)
 
             vals['loja_id'] = loja.id

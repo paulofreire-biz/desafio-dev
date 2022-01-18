@@ -23,15 +23,22 @@
                                     <field name="create_date" string="Dt. Criação"/>
                                     <field name="tipo_transacao_id"/>
                                     <field name="data_hora_ocorrencia"/>
-                                    <field name="valor_movimentacao"/>
                                     <field name="beneficiario_id"/>
                                     <field name="cartao_id"/>
                                     <field name="dono_loja_id"/>
+                                    <field name="valor_movimentacao"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Donos">
+                            <!-- you can display child data like code below -->
+                            <field name="dono_loja_ids">
+                                <tree edit="false">
+                                    <field name="name"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
-
                 </sheet>
             </form>
         </field>

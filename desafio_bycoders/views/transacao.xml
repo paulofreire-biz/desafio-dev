@@ -43,6 +43,20 @@
         </field>
     </record>
 
+    <!-- Search View -->
+    <record id="transacao_search" model="ir.ui.view">
+        <field name="name">transacao.search</field>
+        <field name="model">desafiobc.transacao</field>
+        <field name="arch" type="xml">
+            <search string="Lojas">
+                <group expand="1" string="Agrupamento">
+                    <filter string="Loja" name="agrup_loja" context="{'group_by':'loja_id'}"
+                            groups="desafio_bycoders.group_desafio_bycoders_admin"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- Act Window -->
     <record id='action_transacao' model='ir.actions.act_window'>
         <field name="name">Transação</field>
