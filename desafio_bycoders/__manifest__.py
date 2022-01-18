@@ -28,6 +28,7 @@
         'views/loja.xml',
         'views/templates.xml',
         'views/transacao_original.xml',
+        'views/transacao.xml',
         'views/tipo_transacao.xml',
         'wizards/importar_arquivo.xml',
         'views/menu.xml',

@@ -16,4 +16,9 @@ class Beneficiario(models.TransientModel):
         ('unique_cpf', 'unique(cpf)', 'CPF deve ser único.')
     ]
 
-
+    def name_get(self):
+        """ This method is used to customize display name of the record. In this case we are overriding the name_get method """
+        result = []
+        for rec in self:
+            result.append((rec.id, rec.cpf))
+        return result

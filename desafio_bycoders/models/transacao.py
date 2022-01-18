@@ -37,7 +37,7 @@ class TransacaoOriginal(models.TransientModel):
                                  context={},
                                  domain=[],
                                  )
-    dono_loja_id = fields.Many2one('desafiobc.dono.loja', string='Loja',
+    dono_loja_id = fields.Many2one('desafiobc.dono.loja', string='Dono da Loja',
                                  # optional:
                                  ondelete='restrict',
                                  context={},

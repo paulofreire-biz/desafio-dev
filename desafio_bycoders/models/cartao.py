@@ -16,3 +16,10 @@ class Cartao(models.TransientModel):
         ('unique_cartao', 'unique(cartao)', 'Cartão deve ser único.')
     ]
 
+    def name_get(self):
+        """ This method is used to customize display name of the record. In this case we are overriding the name_get method """
+        result = []
+        for rec in self:
+            result.append((rec.id, rec.cartao))
+        return result
+

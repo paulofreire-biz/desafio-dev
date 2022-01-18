@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="desafiobc_transacao_form" model="ir.ui.view">
+        <field name="name">Transação</field>
+        <field name="model">desafiobc.transacao</field>
+        <field name="arch" type="xml">
+            <form edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="data_hora_ocorrencia"/>
+                            <field name="tipo_transacao_id"/>
+                            <field name="beneficiario_id"/>
+                            <field name="cartao_id"/>
+                        </group>
+                        <group>
+                            <field name="loja_id"/>
+                            <field name="dono_loja_id"/>
+                            <field name="valor_movimentacao"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree(list) View -->
+    <record id="desafiobc_transacao_tree" model="ir.ui.view">
+        <field name="name">Transação Original</field>
+        <field name="model">desafiobc.transacao</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="data_hora_ocorrencia"/>
+                <field name="tipo_transacao_id"/>
+                <field name="beneficiario_id"/>
+                <field name="cartao_id"/>
+                <field name="loja_id"/>
+                <field name="dono_loja_id"/>
+                <field name="valor_movimentacao"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Act Window -->
+    <record id='action_transacao' model='ir.actions.act_window'>
+        <field name="name">Transação</field>
+        <field name="res_model">desafiobc.transacao</field>
+    </record>
+
+    <!-- Act Window View -->
+    <record id="link_transacao_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="desafiobc_transacao_tree"/>
+        <field name="act_window_id" ref="action_transacao"/>
+    </record>
+
+    <record id="link_transacao_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="desafiobc_transacao_form"/>
+        <field name="act_window_id" ref="action_transacao"/>
+    </record>
+
+</odoo>
+
