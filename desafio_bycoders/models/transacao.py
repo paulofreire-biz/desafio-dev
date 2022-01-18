@@ -6,8 +6,8 @@ from odoo import models, fields, api
 _logger = logging.getLogger(__name__)
 
 class TransacaoOriginal(models.TransientModel):
-    _name = 'desafiobc.transacao.original'
-    _description = 'Transacao Original - movimentos recém importados de arquivo CNAB'
+    _name = 'desafiobc.transacao'
+    _description = 'Transacão - movimentos de entrada / saída referente às lojas'
     _order = 'id'
 
     # sequencial = fields.Integer()
@@ -18,7 +18,7 @@ class TransacaoOriginal(models.TransientModel):
                                  domain=[],
                                  )
     data_hora_ocorrencia = fields.Date()
-    valor_movimentacao = fields.Monetary('Valor')
+    valor_movimentacao = fields.Float('Valor',  digits=(10,2), )
     beneficiario_id = fields.Many2one('desafiobc.beneficiario', string='Beneficiário',
                                  # optional:
                                  ondelete='restrict',

@@ -41,6 +41,7 @@
                 <field name="hora_transacao"/>
                 <field name="dono_loja"/>
                 <field name="nome_loja"/>
+                <field name="registro_ok"/>
             </tree>
         </field>
     </record>

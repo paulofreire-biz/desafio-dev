@@ -2,6 +2,7 @@
 
 import logging
 from odoo import models, fields, api
+from datetime import datetime
 
 import base64
 # import StringIO
@@ -26,7 +27,83 @@ class ImportarArquivoWizard(models.TransientModel):
             _logger.info('Vai chamar tipo_transacao.carregar_tabela()')
             tipo_transacao.carregar_tabela()
 
-    # def processar_transacao(self):
+        if (self.env['desafiobc.transacao'].search_count([['id', '>', 0]])) == 0:
+            _logger.info('Vai carregar_transacao')
+            self.carregar_transacao()
+
+    # A função abaixo tem como objetivo pegar os dados da transacao.original e copiar para transacao
+    def carregar_transacao(self):
+
+        vals = {}
+        lista_transacao = self.env['desafiobc.transacao.original'].search([['id', '>', 0]])
+        for rec in lista_transacao:
+            date_time_str = rec.data_ocorrencia+rec.hora_transacao
+            date_time_obj = datetime.strptime(date_time_str, '%Y%m%d%H%M%S')
+            vals['data_hora_ocorrencia'] = date_time_obj
+
+            valor_movimentacao = int(rec.valor_movimentacao)/100
+            vals['valor_movimentacao'] = int(valor_movimentacao)
+
+            # Validando se o tipo da transação existe
+            tipo_transacao = self.env['desafiobc.tipo.transacao'].search([['tipo_transacao', '=', int(rec.tipo_transacao)]])
+            if not tipo_transacao:
+                # Não encontrou a transação correspondente, neste caso iremos abandonar esta transação
+                vals2 = {}
+                vals2['registro_ok'] = False
+                rec.write(vals2)
+                continue
+
+            vals['tipo_transacao_id'] = tipo_transacao.id
+
+            # Tratando beneficiario
+            beneficiario = self.env['desafiobc.beneficiario'].search([['cpf', '=', rec.cpf_beneficiario]])
+            # Verificando se beneficiário já existe, caso contrário iremos inserí-lo
+            _logger.info('beneficiario = %s', beneficiario)
+            if not beneficiario:
+                vals2 = [{'cpf': rec.cpf_beneficiario}]
+                beneficiario = self.env['desafiobc.beneficiario'].create(vals2)
+
+            vals['beneficiario_id'] = beneficiario.id
+
+            # Tratando cartão
+            cartao = self.env['desafiobc.cartao'].search([['cartao', '=', rec.cartao_transacao]])
+            # Verificando se cartão já existe, caso contrário iremos inserí-lo
+            if not cartao:
+                vals2 = [{'cartao': rec.cartao_transacao}]
+                cartao = self.env['desafiobc.cartao'].create(vals2)
+
+            vals['cartao_id'] = cartao.id
+
+            # Tratando loja
+            loja = self.env['desafiobc.loja'].search([['name', '=', rec.nome_loja]])
+            # Verificando se loja já existe, caso contrário iremos inserí-la
+            if not loja:
+                vals2 = [{'name': rec.nome_loja}]
+                loja = self.env['desafiobc.loja'].create(vals2)
+
+            # Atualizando o saldo da loja
+            valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
+            vals2 = [{'saldo': loja.saldo + valor_atualizacao}]
+            self.env['desafiobc.loja'].write(vals2)
+
+            vals['loja_id'] = loja.id
+
+            # Tratando dono da loja para a loja corrente (estou admitindo a possibilidade de um dono possuir mais de uma loja)
+            dono_loja = self.env['desafiobc.dono.loja'].search([['loja_id', '=', loja.id],['name', '=', rec.dono_loja]])
+            # Verificando se dono da loja já existe, caso contrário iremos inserí-lo
+            if not dono_loja:
+                vals2 = [{'loja_id': loja.id, 'name': rec.dono_loja}]
+                dono_loja = self.env['desafiobc.dono.loja'].create(vals2)
+
+            vals['dono_loja_id'] = dono_loja.id
+
+            # Inserindo nova transação
+            transacao = self.env['desafiobc.transacao'].create(vals)
+
+            # Se chegamos até aqui é porque foi tudo bem, atualizando o nosso flag...
+            vals2 = {}
+            vals2['registro_ok'] = True
+            rec.write(vals2)
 
     def importar_arquivo(self):
         _logger.info('Estou em importar_arquivo')

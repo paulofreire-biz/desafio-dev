@@ -12,4 +12,7 @@ class Cartao(models.TransientModel):
 
     cartao = fields.Char()
 
+    _sql_constraints = [
+        ('unique_cartao', 'unique(cartao)', 'Cartão deve ser único.')
+    ]
 

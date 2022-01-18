@@ -19,6 +19,10 @@ class DonoLoja(models.TransientModel):
                                  domain=[],
                                  )
 
+    _sql_constraints = [
+        ('unique_dono_loja', 'unique(loja_id, name)', 'Nome dono loja deve ser único para determinada loja.')
+    ]
+
 
 
 

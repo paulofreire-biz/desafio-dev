@@ -20,4 +20,5 @@ class TransacaoOriginal(models.TransientModel):
     hora_transacao = fields.Char()
     dono_loja = fields.Char()
     nome_loja = fields.Char()
+    registro_ok = fields.Boolean()
 

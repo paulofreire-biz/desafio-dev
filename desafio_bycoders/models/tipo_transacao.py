@@ -29,6 +29,10 @@ class TipoTransacao(models.TransientModel):
         for rec in self:
             rec.sinal = '+' if rec.is_natureza_entrada else '-'
 
+    _sql_constraints = [
+        ('unique_tipo_transacao', 'unique(tipo_transacao)', 'Tipo da transação deve ser único.')
+    ]
+
     def carregar_tabela(self):
 
         vals = {}

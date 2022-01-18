@@ -12,4 +12,8 @@ class Beneficiario(models.TransientModel):
 
     cpf = fields.Char('CPF')
 
+    _sql_constraints = [
+        ('unique_cpf', 'unique(cpf)', 'CPF deve ser único.')
+    ]
+
 
