@@ -81,10 +81,12 @@ class ImportarArquivoWizard(models.TransientModel):
                 vals2 = [{'name': rec.nome_loja}]
                 loja = self.env['desafiobc.loja'].create(vals2)
 
+            _logger.info('tipo_transacao.is_natureza_entrada = %s', tipo_transacao.is_natureza_entrada)
             # Atualizando o saldo da loja
             valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
-            vals2 = [{'saldo': loja.saldo + valor_atualizacao}]
-            self.env['desafiobc.loja'].write(vals2)
+            vals2 = {}
+            vals2['saldo'] = loja.saldo + valor_atualizacao
+            loja.write(vals2)
 
             vals['loja_id'] = loja.id
 
