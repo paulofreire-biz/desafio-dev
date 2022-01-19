@@ -34,76 +34,82 @@ class ImportarArquivoWizard(models.TransientModel):
     # A função abaixo tem como objetivo pegar os dados da transacao.original e copiar para transacao
     def carregar_transacao(self):
 
-        vals = {}
         lista_transacao = self.env['desafiobc.transacao.original'].search([['id', '>', 0]])
         for rec in lista_transacao:
-            date_time_str = rec.data_ocorrencia+rec.hora_transacao
-            date_time_obj = datetime.strptime(date_time_str, '%Y%m%d%H%M%S')
-            vals['data_hora_ocorrencia'] = date_time_obj
+            self.inserir_transacao(rec)
 
-            # Validando se o tipo da transação existe
-            tipo_transacao = self.env['desafiobc.tipo.transacao'].search([['tipo_transacao', '=', int(rec.tipo_transacao)]])
-            if not tipo_transacao:
-                # Não encontrou a transação correspondente, neste caso iremos abandonar esta transação
-                _logger.error('Tipo de Transação não previsto => %s', rec.tipo_transacao)
-                rec.write({'registro_ok': False})
-                continue
+    def inserir_transacao(self, rec):
 
-            vals['tipo_transacao_id'] = tipo_transacao.id
+        vals = {}
+        date_time_str = rec.data_ocorrencia+rec.hora_transacao
+        date_time_obj = datetime.strptime(date_time_str, '%Y%m%d%H%M%S')
+        vals['data_hora_ocorrencia'] = date_time_obj
 
-            valor_movimentacao = int(rec.valor_movimentacao)/100
-            if not tipo_transacao.is_natureza_entrada:
-                valor_movimentacao = valor_movimentacao * (-1)
+        # Validando se o tipo da transação existe
+        tipo_transacao = self.env['desafiobc.tipo.transacao'].search([['tipo_transacao', '=', int(rec.tipo_transacao)]])
+        if not tipo_transacao:
+            # Não encontrou a transação correspondente, neste caso iremos abandonar esta transação
+            _logger.error('Tipo de Transação não previsto => %s', rec.tipo_transacao)
+            rec.write({'registro_ok': False})
+            return
 
-            vals['valor_movimentacao'] = valor_movimentacao
+        vals['tipo_transacao_id'] = tipo_transacao.id
 
-            # Tratando beneficiario
-            beneficiario = self.env['desafiobc.beneficiario'].search([['cpf', '=', rec.cpf_beneficiario]])
-            # Verificando se beneficiário já existe, caso contrário iremos inserí-lo
-            _logger.info('beneficiario = %s', beneficiario)
-            if not beneficiario:
-                vals2 = [{'cpf': rec.cpf_beneficiario}]
-                beneficiario = self.env['desafiobc.beneficiario'].create(vals2)
+        valor_movimentacao = int(rec.valor_movimentacao)/100
+        if not tipo_transacao.is_natureza_entrada:
+            valor_movimentacao = valor_movimentacao * (-1)
 
-            vals['beneficiario_id'] = beneficiario.id
+        vals['valor_movimentacao'] = valor_movimentacao
 
-            # Tratando cartão
-            cartao = self.env['desafiobc.cartao'].search([['cartao', '=', rec.cartao_transacao]])
-            # Verificando se cartão já existe, caso contrário iremos inserí-lo
-            if not cartao:
-                vals2 = [{'cartao': rec.cartao_transacao}]
-                cartao = self.env['desafiobc.cartao'].create(vals2)
+        # Tratando beneficiario
+        beneficiario = self.env['desafiobc.beneficiario'].search([['cpf', '=', rec.cpf_beneficiario]])
+        # Verificando se beneficiário já existe, caso contrário iremos inserí-lo
+        _logger.info('beneficiario = %s', beneficiario)
+        if not beneficiario:
+            vals2 = [{'cpf': rec.cpf_beneficiario}]
+            beneficiario = self.env['desafiobc.beneficiario'].create(vals2)
 
-            vals['cartao_id'] = cartao.id
+        vals['beneficiario_id'] = beneficiario.id
 
-            # Tratando loja
-            loja = self.env['desafiobc.loja'].search([['name', '=', rec.nome_loja]])
-            # Verificando se loja já existe, caso contrário iremos inserí-la
-            if not loja:
-                vals2 = [{'name': rec.nome_loja}]
-                loja = self.env['desafiobc.loja'].create(vals2)
+        # Tratando cartão
+        cartao = self.env['desafiobc.cartao'].search([['cartao', '=', rec.cartao_transacao]])
+        # Verificando se cartão já existe, caso contrário iremos inserí-lo
+        if not cartao:
+            vals2 = [{'cartao': rec.cartao_transacao}]
+            cartao = self.env['desafiobc.cartao'].create(vals2)
 
-            _logger.info('tipo_transacao.is_natureza_entrada = %s', tipo_transacao.is_natureza_entrada)
-            # Atualizando o saldo da loja
-            # valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
-            loja.write({'saldo': loja.saldo + valor_movimentacao})
+        vals['cartao_id'] = cartao.id
 
-            vals['loja_id'] = loja.id
+        # Tratando loja
+        loja = self.env['desafiobc.loja'].search([['name', '=', rec.nome_loja]])
+        # Verificando se loja já existe, caso contrário iremos inserí-la
+        if not loja:
+            vals2 = [{'name': rec.nome_loja}]
+            loja = self.env['desafiobc.loja'].create(vals2)
 
-            # Tratando dono da loja para a loja corrente (estou admitindo a possibilidade de um dono possuir mais de uma loja)
-            dono_loja = self.env['desafiobc.dono.loja'].search([['loja_id', '=', loja.id],['name', '=', rec.dono_loja]])
-            # Verificando se dono da loja já existe, caso contrário iremos inserí-lo
-            if not dono_loja:
-                vals2 = [{'loja_id': loja.id, 'name': rec.dono_loja}]
-                dono_loja = self.env['desafiobc.dono.loja'].create(vals2)
+        _logger.info('tipo_transacao.is_natureza_entrada = %s', tipo_transacao.is_natureza_entrada)
+        # Atualizando o saldo da loja
+        # valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
+        loja.write({'saldo': loja.saldo + valor_movimentacao})
 
-            vals['dono_loja_id'] = dono_loja.id
+        vals['loja_id'] = loja.id
 
-            # Inserindo nova transação
-            transacao = self.env['desafiobc.transacao'].create(vals)
+        # Tratando dono da loja para a loja corrente (estou admitindo a possibilidade de um dono possuir mais de uma loja)
+        dono_loja = self.env['desafiobc.dono.loja'].search([['loja_id', '=', loja.id],['name', '=', rec.dono_loja]])
+        # Verificando se dono da loja já existe, caso contrário iremos inserí-lo
+        if not dono_loja:
+            vals2 = [{'loja_id': loja.id, 'name': rec.dono_loja}]
+            dono_loja = self.env['desafiobc.dono.loja'].create(vals2)
 
-            # Se chegamos até aqui é porque foi tudo bem, atualizando o nosso flag...
-            rec.write({'registro_ok': True})
+        vals['dono_loja_id'] = dono_loja.id
+
+        # Inserindo nova transação
+        transacao = self.env['desafiobc.transacao'].create(vals)
+
+        # Se chegamos até aqui é porque foi tudo bem, atualizando o nosso flag...
+        rec.write({'registro_ok': True})
+
+        return transacao
 
     def importar_arquivo(self):
         _logger.info('Estou em importar_arquivo')
@@ -114,20 +120,24 @@ class ImportarArquivoWizard(models.TransientModel):
 
         _logger.info('file_lines = %s', file_lines)
 
-        vals = {}
-
         for linha in file_lines:
             _logger.info('linha = %s', linha)
+            self.salvar_linha(linha)
 
-            vals['tipo_transacao'] = linha[0:1]
-            vals['data_ocorrencia'] = linha[1:9]
-            vals['valor_movimentacao'] = linha[9:19]
-            vals['cpf_beneficiario'] = linha[19:30]
-            vals['cartao_transacao'] = linha[30:42]
-            vals['hora_transacao'] = linha[42:48]
-            vals['dono_loja'] = linha[48:62]
-            vals['nome_loja'] = linha[62:81]
 
-            transacao_original = self.env['desafiobc.transacao.original'].create(vals)
-            _logger.info('Inseriu ... %s', transacao_original.id)
+    def salvar_linha(self, linha):
 
+        vals = {}
+        vals['tipo_transacao'] = linha[0:1]
+        vals['data_ocorrencia'] = linha[1:9]
+        vals['valor_movimentacao'] = linha[9:19]
+        vals['cpf_beneficiario'] = linha[19:30]
+        vals['cartao_transacao'] = linha[30:42]
+        vals['hora_transacao'] = linha[42:48]
+        vals['dono_loja'] = linha[48:62]
+        vals['nome_loja'] = linha[62:81]
+
+        transacao_original = self.env['desafiobc.transacao.original'].create(vals)
+        _logger.info('Inseriu ... %s', transacao_original.id)
+
+        return transacao_original
