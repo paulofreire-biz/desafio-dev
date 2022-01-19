@@ -17,7 +17,7 @@ class TransacaoOriginal(models.TransientModel):
                                  context={},
                                  domain=[],
                                  )
-    data_hora_ocorrencia = fields.Date()
+    data_hora_ocorrencia = fields.Datetime()
     valor_movimentacao = fields.Float('Valor',  digits=(10,2), )
     beneficiario_id = fields.Many2one('desafiobc.beneficiario', string='Beneficiário',
                                  # optional:

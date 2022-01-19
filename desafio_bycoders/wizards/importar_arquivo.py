@@ -45,9 +45,8 @@ class ImportarArquivoWizard(models.TransientModel):
             tipo_transacao = self.env['desafiobc.tipo.transacao'].search([['tipo_transacao', '=', int(rec.tipo_transacao)]])
             if not tipo_transacao:
                 # Não encontrou a transação correspondente, neste caso iremos abandonar esta transação
-                vals2 = {}
-                vals2['registro_ok'] = False
-                rec.write(vals2)
+                _logger.error('Tipo de Transação não previsto => %s', rec.tipo_transacao)
+                rec.write({'registro_ok': False})
                 continue
 
             vals['tipo_transacao_id'] = tipo_transacao.id
@@ -87,9 +86,7 @@ class ImportarArquivoWizard(models.TransientModel):
             _logger.info('tipo_transacao.is_natureza_entrada = %s', tipo_transacao.is_natureza_entrada)
             # Atualizando o saldo da loja
             # valor_atualizacao = valor_movimentacao if tipo_transacao.is_natureza_entrada else valor_movimentacao * (-1)
-            vals2 = {}
-            vals2['saldo'] = loja.saldo + valor_movimentacao
-            loja.write(vals2)
+            loja.write({'saldo': loja.saldo + valor_movimentacao})
 
             vals['loja_id'] = loja.id
 
@@ -106,9 +103,7 @@ class ImportarArquivoWizard(models.TransientModel):
             transacao = self.env['desafiobc.transacao'].create(vals)
 
             # Se chegamos até aqui é porque foi tudo bem, atualizando o nosso flag...
-            vals2 = {}
-            vals2['registro_ok'] = True
-            rec.write(vals2)
+            rec.write({'registro_ok': True})
 
     def importar_arquivo(self):
         _logger.info('Estou em importar_arquivo')

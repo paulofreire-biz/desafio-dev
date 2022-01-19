@@ -52,6 +52,8 @@
                 <group expand="1" string="Agrupamento">
                     <filter string="Loja" name="agrup_loja" context="{'group_by':'loja_id'}"
                             groups="desafio_bycoders.group_desafio_bycoders_admin"/>
+                    <filter string="Tipo Transação" name="agrup_tipo" context="{'group_by':'tipo_transacao_id'}"
+                            groups="desafio_bycoders.group_desafio_bycoders_admin"/>
                 </group>
             </search>
         </field>
