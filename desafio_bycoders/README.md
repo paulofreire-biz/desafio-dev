@@ -5,12 +5,14 @@ A aplicação foi criada utilizando o framework Odoo, versão 14. Todo o modelo 
 atender às [especificações do desafio.](https://github.com/paulofreire-biz/desafio-dev/blob/main/README.md)
 
 # Instruções para instalação
-Por tratar-se de uma aplicação Odoo, versão 14, Community version, as instruções de instalação se fazem desnecessárias.
+Por tratar-se de uma aplicação Odoo, versão 14, Community version, a instalação da aplicação segue o mesmo padrão de 
+qualquer aplicação Odoo. Ou seja, basta copiar todos os arquivos e diretórios que estão abaixo de desafio_bycoders para seu diretório de 
+aplicações Odoo. Depois é só ir na opção "Aplicativos" e pesquisar pela aplicação "desafio_bycoders" e clicar em instalar.
 
 # Navegação pela aplicação
 Ao efetuar login como administrador e selecionar a aplicação Desafio bycoders_, será exibida como padrão as transações já carregadas e processadas.
-Na primeira, porém nenhum registro estará disponível. Para efetuar a carga inicial, clicar na opção "Importar Arquivo". Uma vez que o arquivo for selecionado e 
-clicado no botão "Importar", os registros do arquivo .txt serão processados sequencialmente.
+Porém, na primeira vez, nenhum registro estará disponível. Para efetuar a carga inicial, clicar na opção "Importar Arquivo". Uma vez que o arquivo é selecionado e 
+clicado no botão "Importar", os registros do arquivo .txt serão processados sequencialmente. Agora já é possível navegar pelos menus e desfrutar dos dados existentes.
 
 # Telas da aplicação
 É possível visualizar [algumas telas da aplicação](https://github.com/paulofreire-biz/desafio-dev/tree/main/telas-odoo) 
@@ -30,11 +32,13 @@ Para consultar o saldo de cada loja, basta ir no menu Configuração / Loja. Ao 
 as transações, bem como os donos de cada loja.
 
 ```diff
-Obs.: Achei estranho o tipo de transação "débito" ser considerada com Entrado, porém segui a definição do enunciado.
+Obs.: Achei estranho o tipo de transação "débito" ser considerada com Entrada, porém segui a definição do enunciado.
 ```
 
 # Agrupamento das transações
-Na opção Transação, ao clicar no botão "Agrupado por", é possível agrupar as transações por Loja e Tipo de Transação. 
+Na opção Transação, ao clicar no botão "Agrupado por", é possível agrupar as transações de duas formas:
+1. Por Loja
+2. Por Tipo de Transação
 
 # Outras funcionalidades
 Apesentamos no menu Configuração, os Tipos de Transações, assim como as Transações Originais (aquelas descritas no passo 1 da sequência de processamento)
@@ -45,7 +49,8 @@ Foram criados os seguintes testes automatizados: test_inserir_transacao_original
 Não cheguei a criar testes para a UI de upload de arquivos por falta de tempo e conhecimento. 
 
 # Docker compose
-Não domino tal tecnologia, porém dei uma breve pesquisada no assunto. No meu caso costumo fazer deploy de aplicações via Git.
+Não domino tal tecnologia, porém dei uma breve pesquisada no assunto. No caso das minhas aplicações Odoo, costumo fazer deploy
+sempre via GitHub e costuma ser algo prático, fácil e seguro. Mas gostaria de conhecer mais sobre o Docker.
 
 #Comentários Pessoais
-Aproveitei este desafio para me aprofundar um pouco mais no Odoo. Obrigado pela oportunidade!
+Aproveitei este desafio para me aprofundar um pouco mais no framework Odoo. Agrdeço pela oportunidade!
