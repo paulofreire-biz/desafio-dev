@@ -1,15 +1,19 @@
 # Importação de arquivo .txt no padrão CNAB
 
 Trata-de um desafio criado pela empresa bycoders_ onde o intuito é carregar um arquivo .txt no padrão CNAB.
-A aplicação foi criada utilizando o framework Odoo, versão 14. 
+A aplicação foi criada utilizando o framework Odoo, versão 14. Todo o modelo de dados foi criado visando
+atender às [especificações do desafio.](https://github.com/paulofreire-biz/desafio-dev/blob/main/README.md)
 
 # Instruções para instalação
-Por tratar-se de uma aplicação Odoo, versão 14, Community version, as instruções de instalação se fazem desnecessário.
+Por tratar-se de uma aplicação Odoo, versão 14, Community version, as instruções de instalação se fazem desnecessárias.
 
 # Navegação pela aplicação
 Ao efetuar login como administrador e selecionar a aplicação Desafio bycoders_, será exibida como padrão as transações já carregadas e processadas.
 Na primeira, porém nenhum registro estará disponível. Para efetuar a carga inicial, clicar na opção "Importar Arquivo". Uma vez que o arquivo for selecionado e 
 clicado no botão "Importar", os registros do arquivo .txt serão processados sequencialmente.
+
+# Telas da aplicação
+É possível visualizar [algumas telas da aplicação](https://github.com/paulofreire-biz/desafio-dev/tree/main/telas-odoo) 
 
 # Processamento dos registros do arquivo .txt
 **Sequência de processamento:**
@@ -23,7 +27,11 @@ respeitando a ordem das foreign keys.
 
 # Saldo por loja
 Para consultar o saldo de cada loja, basta ir no menu Configuração / Loja. Ao clicar na respectiva loja, será possível visualizar
-as transações, bem como os donos de cada loja. 
+as transações, bem como os donos de cada loja.
+
+```diff
+Obs.: Achei estranho o tipo de transação "débito" ser considerada com Entrado, porém segui a definição do enunciado.
+```
 
 # Agrupamento das transações
 Na opção Transação, ao clicar no botão "Agrupado por", é possível agrupar as transações por Loja e Tipo de Transação. 

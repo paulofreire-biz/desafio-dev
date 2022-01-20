@@ -14,6 +14,7 @@ class ImportarArquivoWizard(models.TransientModel):
     _description = 'Wizar para fazer o upload do arquivo e depois ler seus dados'
 
     arquivo_txt = fields.Binary(string='Arquivo .txt para importação', required=True)
+    mensagem_retorno = fields.Char()
 
     def inicio_processamento(self):
         _logger.info('Estou em importar_arquivo')
@@ -30,6 +31,28 @@ class ImportarArquivoWizard(models.TransientModel):
         if (self.env['desafiobc.transacao'].search_count([['id', '>', 0]])) == 0:
             _logger.info('Vai carregar_transacao')
             self.carregar_transacao()
+
+        #  Montando tela de retorno
+
+        mensagem_retorno = "Processamento finalizado com sucesso!"
+
+        form_id = self.env.ref('desafio_bycoders.desafiobc_msg_carga_transacoes_form').id
+
+        _logger.info('Chamando formulário de mensagem ok')
+
+        return {
+            'name': 'Mensagem',
+            'domain': [],
+            'view_type': 'form',
+            'res_model': 'desafiobc.importar.arquivo',
+            'view_id': form_id,
+            'view_mode': 'form',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                   'default_mensagem_retorno': mensagem_retorno,
+            },
+        }
 
     # A função abaixo tem como objetivo pegar os dados da transacao.original e copiar para transacao
     def carregar_transacao(self):

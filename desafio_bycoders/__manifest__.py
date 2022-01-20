@@ -6,10 +6,13 @@
         subtitle on modules listing or apps.openerp.com""",
     'sequence': -5,
     'description': """
-        Long description of module's purpose
+        Trata-de um desafio criado pela empresa bycoders_ onde o intuito é carregar um arquivo .txt no padrão CNAB.
+        A aplicação foi criada utilizando o framework Odoo, versão 14. Todo o modelo de dados foi criado visando
+        atender às especificações do desafio, conforme link abaixo: 
+        https://github.com/paulofreire-biz/desafio-dev/blob/main/README.md
     """,
 
-    'author': "My Company",
+    'author': "Paulo Freire - paulofreire@paulofreire.biz",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
