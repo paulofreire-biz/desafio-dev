@@ -38,7 +38,7 @@ class TipoTransacao(models.TransientModel):
         vals = {}
         vals['tipo_transacao'] = 1
         vals['name'] = 'Débito'
-        vals['is_natureza_entrada'] = False
+        vals['is_natureza_entrada'] = True
         self.create(vals)
 
         vals['tipo_transacao'] = 2
