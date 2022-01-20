@@ -2,8 +2,7 @@
 {
     'name': "Desafio bycoders_",
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Aplicação para carregar um arquivo .txt no padrão CNAB - desafio bycoders_""",
     'sequence': -5,
     'description': """
         Trata-de um desafio criado pela empresa bycoders_ onde o intuito é carregar um arquivo .txt no padrão CNAB.
